@@ -1,5 +1,5 @@
 Writing pseudo code
-and functions of MOOLECULAR DYNAMICS
+and functions of MOLECULAR DYNAMICS
 
 0 read Natoms - luis/ Fareeda 
 1 Read mass and coordinates - luis/Mario  
@@ -9,4 +9,5 @@ and functions of MOOLECULAR DYNAMICS
 5 Calculate acceleration - F and Mario /Luis
 6 Implement Molecular dynamics - all 
 
+deadline = 25 december
 
