@@ -75,3 +75,21 @@ MODULE MD_functions
 
 END MODULE MD_functions
 
+! Compute the total kinetic energy T
+double precision function T(Natoms, velocity, mass) RESULT(Total_T)
+    implicit none
+    integer, intent(in) :: Natoms
+    double precision, intent(in) :: velocity(Natoms,3)
+    double precision, intent(in) :: mass(Natoms)
+    double precision, intent(out) :: Total_T
+    integer :: i 
+    
+    !Initialize Total_T to zero
+    Total_T = 0.0
+     
+    !Sum over all atoms 
+    DO i = 1, Natoms
+	Total_T = Total_T + 0.5 * mass(i) * & (velocity(i, 1)**2 + velocity(i, 2)**2 + velocity(i, 3)**2)
+    end DO
+end function T
+
