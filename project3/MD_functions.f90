@@ -9,7 +9,8 @@ MODULE MD_functions
 		INTEGER :: Natoms
 
 		!Open input file in read mode
-		OPEN(unit=1, file=input_file, actiton='read', status='old', form='formatted')
+		OPEN(unit=1, file=input_file, action='read', status='old', form='formatted')
+
 		READ(1, *) Natoms !Read first line, and store number of atoms in Natoms
 		CLOSE(unit=1) !Close file after reading
 	END FUNCTION read_Natoms
@@ -23,8 +24,9 @@ MODULE MD_functions
 		DOUBLE PRECISION, INTENT(OUT) :: mass(Natoms)
 
 		!Open input file in read mode
-		OPEN(unit=1, file=input_file, actiton='read', status='old', form='formatted')
-		READ(1, *) !Read first line to skip it
+		OPEN(unit=1, file=input_file, action='read', status='old', form='formatted')
+		
+                READ(1, *) !Read first line to skip it
 
 		!Iterate over the lines of the file and store the coordinates and masses
 		DO i=1,Natoms
@@ -72,3 +74,4 @@ MODULE MD_functions
 	END FUNCTION V
 
 END MODULE MD_functions
+
