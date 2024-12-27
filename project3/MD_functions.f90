@@ -89,7 +89,8 @@ DOUBLE PRECISION FUNCTION T(Natoms, velocity, mass) RESULT(Total_T)
      
 	!Sum over all atoms 
 	DO i=1,Natoms
-		Total_T = Total_T + 0.5 * mass(i) * & (velocity(i, 1)**2 + velocity(i, 2)**2 + velocity(i, 3)**2)
+		Total_T = Total_T + 0.5 * mass(i) * & 
+                          (velocity(i, 1)**2 + velocity(i, 2)**2 + velocity(i, 3)**2)
 	END DO
 END FUNCTION T
 

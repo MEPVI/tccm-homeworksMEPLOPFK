@@ -67,3 +67,33 @@ void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t* 
     }
 }
 
+
+
+
+
+// MP2 PART OF CODE
+
+void compute_mp2_energy(int32_t n_up, int32_t mo_num, double* mo_energy, 
+                        int64_t n_integrals, int32_t* index, double* value) {
+    double E_MP2 = 0.0;
+
+    for (int i = 0; i < n_up; i++) {	// Loop over occupied orbitals
+        for (int j = 0; j < n_up; j++) {
+            for (int a = n_up; a < mo_num; a++) {	// Loop over virtual orbitals
+                for (int b = n_up; b < mo_num; b++) {
+                    double integral = find_integral(i, j, a, b, index, value);	   // Find double integrals
+                    double denominator = mo_energy[i] + mo_energy[j] - mo_energy[a] - mo_energy[b];	// calculate denominator 
+                    if (denominator != 0.0) {
+                        E_MP2 += (integral * integral) / denominator;
+                    } else {
+                        fprintf(stderr, "Warning: Division by zero in MP2 energy computation.\n");
+                    }
+                }
+            }
+        }
+    }
+
+    printf("MP2 Correlation Energy: %f\n", E_MP2);
+}
+
+// COUNT 8 fold symmetry once whole code is done 
