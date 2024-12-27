@@ -76,20 +76,60 @@ MODULE MD_functions
 END MODULE MD_functions
 
 ! Compute the total kinetic energy T
-double precision function T(Natoms, velocity, mass) RESULT(Total_T)
-    implicit none
-    integer, intent(in) :: Natoms
-    double precision, intent(in) :: velocity(Natoms,3)
-    double precision, intent(in) :: mass(Natoms)
-    double precision, intent(out) :: Total_T
-    integer :: i 
+DOUBLE PRECISION FUNCTION T(Natoms, velocity, mass) RESULT(Total_T)
+	IMPLICIT NONE
+	INTEGER, INTENT(IN) :: Natoms
+	DOUBLE PRECISION, INTENT(IN) :: velocity(Natoms,3)
+	DOUBLE PRECISION, INTENT(IN) :: mass(Natoms)
+	DOUBLE PRECISION, INTENT(OUT) :: Total_T
+	INTEGER :: i 
     
-    !Initialize Total_T to zero
-    Total_T = 0.0
+	!Initialize Total_T to zero
+	Total_T = 0.0
      
-    !Sum over all atoms 
-    DO i = 1, Natoms
-	Total_T = Total_T + 0.5 * mass(i) * & (velocity(i, 1)**2 + velocity(i, 2)**2 + velocity(i, 3)**2)
-    end DO
-end function T
+	!Sum over all atoms 
+	DO i=1,Natoms
+		Total_T = Total_T + 0.5 * mass(i) * & (velocity(i, 1)**2 + velocity(i, 2)**2 + velocity(i, 3)**2)
+	END DO
+END FUNCTION T
+
+! Computing the Acceleration
+SUBROUTINE compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsilon)
+	IMPLICIT NONE
+	INTEGER, INTENT(IN) :: Natoms
+	DOUBLE PRECISION, INTENT(IN) :: coord(Natoms,3)
+	DOUBLE PRECISION, INTENT(IN) :: mass(Natoms)
+	DOUBLE PRECISION, INTENT(IN) :: distance(Natoms,Natoms)
+	DOUBLE PRECISION, INTENT(IN) :: epsilon, sigma
+	DOUBLE PRECISION, INTENT(OUT) :: acceleration(Natoms, 3)
+	DOUBLE PRECISION :: rij, dx, dy, dz, inverse_m, force
+	INTEGER :: i, j 
+
+	!Initialize acceleration to Zero 
+	acceleration = 0.0
+
+	! Loop over all atoms 
+	DO i = 1, Natoms 
+    	inverse_mass = 1.0 / mass(i)
+        DO j = 1, Natoms 
+        	IF (j .gt. i) THEN 
+                	rij = distance(i,j)
+                        
+                        ! Force from Lennard jones potential
+                        force = 24.0 * epsilon * (2.0 * (sigma / rij)**12 - (sigma / rij)**6) / rij
+ 
+                        ! Compute differences in Coordinates 
+                        dx = coord(i,1) - coord(j,1)
+                        dy = coord(i,2) - coord(j,2)
+                        dZ = coord(i,3) - coord(j,3)
+
+
+                        ! Update accelerations
+                        acceleration(i,1) = acceleration(i,1) + inverse_mass * force * (dx / rij)
+                        acceleration(i,2) = acceleration(i,2) + inverse_mass * force * (dx / rij)
+                        acceleration(i,3) = acceleration(i,3) + inverse_mass * force * (dx / rij)
+		END IF 
+	END DO 
+END DO
+END SUBROUTINE compute_acc
 
