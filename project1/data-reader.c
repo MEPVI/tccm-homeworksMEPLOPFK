@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <trexio.h>
-#include <reader_data.h>
+#include "reader-data.h"
 
 void read_nuclear_repulsion(trexio_t* file) {
     double energy;
@@ -47,14 +47,14 @@ void read_one_electron_integrals(trexio_t* file, int32_t mo_num, double* core_ha
     }
 }
 
-void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t* index, double* value) {
+void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t** index, double** value) {
     if (trexio_read_mo_2e_int_eri_size(file, n_integrals) != TREXIO_SUCCESS) {
         printf("Error reading two-electron integrals size.\n");
         exit(1);
     }
 
-    *index = malloc(4 * (*n_integrals) * sizeof(int32_t));
-    *value = malloc((*n_integrals) * sizeof(double));
+    *index = (int32_t*)malloc(4 * (*n_integrals) * sizeof(int32_t));
+    *value = (double*)malloc((*n_integrals) * sizeof(double));
 
     if (*index == NULL || *value == NULL) {
         fprintf(stderr, "Memory allocation failed.\n");
@@ -66,4 +66,3 @@ void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t* 
         exit(1);
     }
 }
-
