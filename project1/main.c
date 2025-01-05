@@ -12,7 +12,7 @@ void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t**
 
 int main() {
     trexio_exit_code rc;
-    trexio_t* file = trexio_open("sample_data.trexio", 'r', TREXIO_AUTO, &rc);
+    trexio_t* file = trexio_open("c2h2.h5", 'r', TREXIO_AUTO, &rc);
 
     if (rc != TREXIO_SUCCESS) {
         printf("Error opening file.\n");
