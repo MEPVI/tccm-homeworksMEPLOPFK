@@ -30,6 +30,8 @@ int main() {
     
     //Read the number of MOs and their energies
     read_mo_data(file, &mo_num, &mo_energy);
+    //saved the number of MOs in a variable
+    int32_t saved_mo = mo_num;
     // allocate memory for core Hamiltonian matrix 
     double* core_hamiltonian = malloc(mo_num * mo_num * sizeof(double));
     // Read one-electron integrals (core Hamiltonian) from TREXIO
