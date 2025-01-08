@@ -25,6 +25,8 @@ int main() {
     int32_t mo_num;
     double* mo_energy;
     read_mo_data(file, &mo_num, &mo_energy);
+    // saved the number of MOs into a separate variable
+    int32_t saved_mo = mo_num;
 
     double* core_hamiltonian = malloc(mo_num * mo_num * sizeof(double));
     read_one_electron_integrals(file, mo_num, core_hamiltonian);
