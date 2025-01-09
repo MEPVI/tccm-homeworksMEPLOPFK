@@ -87,7 +87,7 @@ void read_data_and_calculate(const char *filename) {
         exit(1);
     }
 
-    // Now you have all data, you can implement HF and MP2 calculations
+    // HF and MP2 calculations
 
     // Free allocated memory
  //   free(mo_energy);
