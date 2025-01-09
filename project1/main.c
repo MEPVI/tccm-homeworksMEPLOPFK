@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <trexio.h>
+#include "reader-data.h"
+#include "HF.h"
+
 
 //declare function that are part of your codebase
-void read_nuclear_repulsion(trexio_t*  file,const  double*  const  nuc_energy);
+void read_nuclear_repulsion(trexio_t*  file,  double*  const  nuc_energy);
 void read_electron_up_num(trexio_t* file, int32_t* n_up);
 void read_mo_data(trexio_t* file, int32_t* mo_num, double** mo_energy);
 void read_one_electron_integrals(trexio_t* file, int32_t mo_num, double* core_hamiltonian);
@@ -34,7 +37,7 @@ int main() {
     double* mo_energy;
     read_mo_data(file, &mo_num, &mo_energy);
 // occupied number of orbitals
-   int32_t saved_mo_num = n_up;
+   int32_t* saved_mo_num = n_up;
     // Save the number of molecular orbitals into a separate variable
    // int32_t saved_mo_num = mo_num;
 
