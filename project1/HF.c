@@ -1,5 +1,5 @@
 //C function to obtain the HF energy
-//STILL NEEDS TO BE TESTED
+//STILL NEEDS TO BE TESTED!!
 double HF(int32_t N_occ, int32_t N_mo, double E_NN, double* const one_e_int, \
 		int_64t nInts, int32_t* index, double* const two_e_int){
 
