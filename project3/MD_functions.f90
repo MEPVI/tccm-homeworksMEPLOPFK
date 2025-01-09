@@ -1,4 +1,5 @@
 MODULE MD_functions
+<<<<<<< HEAD
     IMPLICIT NONE
 
     CONTAINS
@@ -57,6 +58,21 @@ MODULE MD_functions
         DOUBLE PRECISION, INTENT(IN) :: distance(Natoms, Natoms)
         DOUBLE PRECISION, PARAMETER :: zero = 0.0
         INTEGER :: i, j
+
+
+      !Initialize V_total to zero
+          V_tot = zero
+
+		!Iteratie over all pair of atoms and add each contribution to V_tot
+		DO i=1,Natoms
+			DO j=1,Natoms
+				IF (j .gt. i) THEN
+					V_tot = V_tot &
+						+ 4 * epsilon * ((sigma/distance(i,j))**12-(sigma/distance(i,j))**6)
+				END IF
+			END DO
+		END DO
+	END FUNCTION V
 
 
 ! Compute the total kinetic energy T
