@@ -9,8 +9,8 @@ MODULE MD_functions
 		INTEGER :: Natoms
 
 		!Open input file in read mode
-		OPEN(unit=1, file=input_file, action='read', status='old', form='formatted')
 
+		OPEN(unit=1, file=input_file, action='read', status='old', form='formatted')
 		READ(1, *) Natoms !Read first line, and store number of atoms in Natoms
 		CLOSE(unit=1) !Close file after reading
 	END FUNCTION read_Natoms
@@ -24,6 +24,7 @@ MODULE MD_functions
 		DOUBLE PRECISION, INTENT(OUT) :: mass(Natoms)
 
 		!Open input file in read mode
+
 		OPEN(unit=1, file=input_file, action='read', status='old', form='formatted')
 		
                 READ(1, *) !Read first line to skip it
@@ -73,7 +74,6 @@ MODULE MD_functions
 		END DO
 	END FUNCTION V
 
-END MODULE MD_functions
 
 ! Compute the total kinetic energy T
 DOUBLE PRECISION FUNCTION T(Natoms, velocity, mass) RESULT(Total_T)
@@ -134,3 +134,4 @@ SUBROUTINE compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsil
 END DO
 END SUBROUTINE compute_acc
 
+END MODULE MD_functions
