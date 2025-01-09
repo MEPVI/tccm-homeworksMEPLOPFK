@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CC = gcc
 
 CFLAGS = -Wall -Iinclude -I/opt/homebrew/opt/openblas/include
@@ -6,6 +7,14 @@ LDFLAGS = -L/opt/homebrew/lib -ltrexio
 SRC = main.c data-reader.c
 OBJ = main.o data-reader.o
 
+=======
+CC = gcc 
+CFLAGS = -Wall -Iinclude -I/opt/homebrew/opt/openblas/include
+LDFLAGS = -L/opt/homebrew/lib -ltrexio
+
+SRC = main.c data-reader.c HF.c
+OBJ = main.o data-reader.o HF.o
+>>>>>>> MARIO
 EXEC = main
 
 all: $(EXEC)
@@ -19,6 +28,11 @@ main.o: main.c
 data_reader.o: data_reader.c reader-data.h
 	$(CC) $(CFLAGS) -c data_reader.c -o data_reader.o
 
+<<<<<<< HEAD
 
+=======
+HF.o: HF.c HF.h 
+	$(CC) $(CFLAGS) -c HF.c -o HF.o
+>>>>>>> MARIO
 clean:
 	rm -f $(OBJ) $(EXEC)
