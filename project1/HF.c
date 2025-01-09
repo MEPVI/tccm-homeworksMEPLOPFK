@@ -31,7 +31,7 @@ double HF(int32_t N_occ, int32_t N_mo, double E_NN, double* const one_e_int, \
 				two_e_sum += 4*two_e_int[n]
 			}
 			//Case 3: Exchange integral
-			else if (i == j && k = l){
+			else if (i == j && k == l){
 				two_e_sum -= 2*two_e_int[n]
 			}
 		}
