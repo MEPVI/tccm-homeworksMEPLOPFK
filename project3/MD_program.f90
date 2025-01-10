@@ -91,7 +91,7 @@ end do
  CLOSE(10)
 
     ! Deallocate arrays
-    DEALLOCATE(coord, mass, distance, velocity)
+    DEALLOCATE(coord, mass, distance, velocity, acceleration)
 
 
 
