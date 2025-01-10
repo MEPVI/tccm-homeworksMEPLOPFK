@@ -1,0 +1,26 @@
+# TCCM Homework: Molecular Dynamics Simulation
+
+## Overview
+This project implements a Molecular Dynamics (MD) simulation using Fortran.
+
+## Directory Structure
+- `src`: Contains source files for the program (e.g., MD_functions.f90).
+- `tests`: Contains test files to ensure the program behaves as expected.
+- `data`: Example input data for testing the program.
+- `LICENSE`: License for the project.
+- `AUTHORS`: List of contributors.
+- `README.md`: Project description.
+- `INSTALL.md`: Instructions to install and run the program.
+
+## Features
+- Calculates distances between atoms
+- Computes the Lennard-Jones potential for atomic interactions
+- Simulates motion using the Verlet integration algorithm
+- Outputs trajectories in XYZ format for visualization
+
+## Requirements
+- Fortran compiler (e.g., GFortran or Intel Fortran Compiler)
+- Operating system: macOS/Linux/Windows (with a Fortran toolchain)
+
+## How to Run
+See `INSTALL.md` for installation and running instructions

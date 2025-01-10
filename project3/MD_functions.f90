@@ -129,8 +129,18 @@ SUBROUTINE compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsil
                         acceleration(i,1) = acceleration(i,1) + inverse_mass * force * (dx / rij)
                         acceleration(i,2) = acceleration(i,2) + inverse_mass * force * (dx / rij)
                         acceleration(i,3) = acceleration(i,3) + inverse_mass * force * (dx / rij)
+<<<<<<< HEAD
                 END IF
         END DO
+=======
+
+                        ! Update accelerations
+                        acceleration(j,1) = acceleration(j,1) + inverse_mass * force * (dx / rij)
+                        acceleration(j,2) = acceleration(j,2) + inverse_mass * force * (dx / rij)
+                        acceleration(j,3) = acceleration(j,3) + inverse_mass * force * (dx / rij)
+		END IF 
+	END DO 
+>>>>>>> 5ba58e422ac02231a10f05e5622043653c940f05
 END DO
 END SUBROUTINE compute_acc
 

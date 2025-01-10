@@ -89,14 +89,84 @@ END FUNCTION V
             total_kinetic_energy = total_kinetic_energy + 0.5d0 * mass(i) * velocity_squared
         END DO
     END FUNCTION T
+! Computing the Acceleration
+  SUBROUTINE compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsilon)
+          IMPLICIT NONE
+         INTEGER, INTENT(IN) :: Natoms
+         DOUBLE PRECISION, INTENT(IN) :: coord(Natoms,3)
+         DOUBLE PRECISION, INTENT(IN) :: mass(Natoms)
+         DOUBLE PRECISION, INTENT(IN) :: distance(Natoms,Natoms)
+         DOUBLE PRECISION, INTENT(IN) :: epsilon, sigma
+         DOUBLE PRECISION, INTENT(OUT) :: acceleration(Natoms, 3)
+        DOUBLE PRECISION :: rij, dx, dy, dz, inverse_m, force
+         INTEGER :: i, j
+ 
+         !Initialize acceleration to Zero 
+         acceleration = 0.0
+ 
+         ! Loop over all atoms 
+         DO i = 1, Natoms
+         inverse_m = 1.0 / mass(i)
+         DO j = 1, Natoms
+                 IF (j .gt. i) THEN
+                         rij = distance(i,j)
+ 
+                         ! Force from Lennard jones potential
+                         force = 24.0 * epsilon * (2.0 * (sigma / rij)**12 - (sigma / rij)**6) / rij
+ 
+                        ! Compute differences in Coordinates 
+                         dx = coord(i,1) - coord(j,1)
+                         dy = coord(i,2) - coord(j,2)
+                         dZ = coord(i,3) - coord(j,3)
+ 
+ 
+                         ! Update accelerations
+                         acceleration(i,1) = acceleration(i,1) + inverse_m * force * (dx / rij)
+                         acceleration(i,2) = acceleration(i,2) + inverse_m * force * (dx / rij)
+                         acceleration(i,3) = acceleration(i,3) + inverse_m * force * (dx / rij)
+ 
+                         ! Update accelerations
+                         acceleration(j,1) = acceleration(j,1) + inverse_m * force * (dx / rij)
+                         acceleration(j,2) = acceleration(j,2) + inverse_m * force * (dx / rij)
+                         acceleration(j,3) = acceleration(j,3) + inverse_m * force * (dx / rij)
+                 END IF
+         END DO
+END DO  
+END SUBROUTINE compute_acc
 
-SUBROUTINE update_r(r, r_0, v, ts, a)
+SUBROUTINE update_r(natoms, r, v, a, ts)
     IMPLICIT NONE
-    
-    DOUBLE PRECISION  
-    
+
+    INTEGER, INTENT(IN) :: natoms
+    REAL*8, INTENT(INOUT) :: r(natoms, 3)
+    REAL*8, INTENT(IN) ::  v(natoms, 3), a(natoms, 3)
+    REAL, INTENT(IN) :: ts
+
+    INTEGER :: i, j
+
+    DO i=1,natoms
+    DO j=1,3
+    r(i,j) = r(i,j) + v(i,j)*ts + a(i,j) * (ts**2) / 2
+    END DO
+    END DO
 END SUBROUTINE
 
+SUBROUTINE update_v(natoms, r, v, a, ts)
+    IMPLICIT NONE
+
+    INTEGER, INTENT(IN) :: natoms
+    REAL*8, INTENT(INOUT) :: v(natoms, 3)
+    REAL*8, INTENT(IN) ::  r(natoms, 3), a(natoms, 3)
+    REAL, INTENT(IN) :: ts
+
+    INTEGER :: i, j
+
+    DO i=1,natoms
+    DO j=1,3
+    v(i,j) = v(i,j) + 0.5 * a(i,j) * ts
+    END DO
+    END DO
+END SUBROUTINE
 
 
 
