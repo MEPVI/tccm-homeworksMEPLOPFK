@@ -1,8 +1,8 @@
-PROGRAM MD_program
+program MD_program
     USE MD_functions
     IMPLICIT NONE
 
-    INTEGER :: Natoms
+    INTEGER :: Natoms, i, j
     DOUBLE PRECISION, ALLOCATABLE :: coord(:, :), mass(:), distance(:, :)
     CHARACTER(len=100) :: input_file
     DOUBLE PRECISION :: epsilon, sigma, V_tot
@@ -26,6 +26,15 @@ PROGRAM MD_program
 
     ! Compute distances
     CALL compute_distances(Natoms, coord, distance)
+
+    !Printing coords
+    write(*,*) "Printing coordinate matrix... \n"
+    do i=1,natoms
+    do j=1,natoms
+        write(*,*) distance(i, j)
+    end do
+    write(*,*) "\n"
+    end do
 
     ! Compute potential energy
     V_tot = V(epsilon, sigma, Natoms, distance)

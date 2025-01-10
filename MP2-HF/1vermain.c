@@ -48,12 +48,6 @@ void read_data_and_calculate(const char *filename) {
         exit(1);
     }
 
-    // Debug print MO energies
-    printf("Molecular Orbital Energies:\n");
-    for (int i = 0; i < mo_num; i++) {
-        printf("mo_energy[%d]: %lf\n", i, mo_energy[i]);
-    }
-
     // Read one-electron integrals
     one_electron_integrals = (double *)malloc(mo_num * mo_num * sizeof(double));
     rc = trexio_read_mo_1e_int_core_hamiltonian(trexio_file, one_electron_integrals);
@@ -88,17 +82,6 @@ void read_data_and_calculate(const char *filename) {
         exit(1);
     }
 
-    // Debug print two-electron integrals
-    printf("Two-Electron Integrals (first 5):\n");
-    for (int i = 0; i < 5 && i < n_integrals; i++) {
-        printf("Index: %d %d %d %d, Value: %lf\n",
-            two_electron_indices[4 * i],
-            two_electron_indices[4 * i + 1],
-            two_electron_indices[4 * i + 2],
-            two_electron_indices[4 * i + 3],
-            two_electron_values[i]);
-    }
-
     // Close the TREXIO file
     rc = trexio_close(trexio_file);
     if (rc != TREXIO_SUCCESS) {
@@ -107,21 +90,22 @@ void read_data_and_calculate(const char *filename) {
     }
 
     // HF and MP2 calculations
-    double E_HF = HF(n_up, mo_num, energy, one_electron_integrals, n_integrals, two_electron_indices, two_electron_values);
-    printf("Hartree-Fock Energy: %lf\n", E_HF);
+       double E_HF = HF(n_up, mo_num, energy, one_electron_integrals, n_integrals, two_electron_indices, two_electron_values);
+    printf("Hartree-Fock Energy: %f\\n", E_HF);
+        
+       double mp2_energy = compute_mp2_energy(n_up, mo_num, mo_energy, n_integrals, two_electron_indices, two_electron_values);
+    printf("MP2 Energy: %f\\n", mp2_energy);
+      
 
-    double mp2_energy = compute_mp2_energy(n_up, mo_num, mo_energy, n_integrals, two_electron_indices, two_electron_values);
-    printf("MP2 Energy: %lf\n", mp2_energy);
-
-    // Free allocated memory
-    free(mo_energy);
-    free(one_electron_integrals);
-    free(two_electron_indices);
-    free(two_electron_values);
+ // Free allocated memory
+ //   free(mo_energy);
+  //  free(one_electron_integrals);
+   // free(two_electron_indices);
+   // free(two_electron_values);
+//}
 }
-
 int main() {
-    const char *filename = "./data/h2o.h5"; // Adjust file path
+    const char *filename = "./data/h2o.h5";
     read_data_and_calculate(filename);
     return 0;
 }
