@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <trexio.h>
-
+#include "HF.h"
 void read_data_and_calculate(const char *filename) {
     trexio_t *trexio_file;
     trexio_exit_code rc;
@@ -88,7 +88,8 @@ void read_data_and_calculate(const char *filename) {
     }
 
     // HF and MP2 calculations
-
+       double E_HF = HF(n_up, mo_num, energy, one_electron_integrals, n_integrals, two_electron_indices, two_electron_values);
+    printf("Hartree-Fock Energy: %f\\n", E_HF);
     // Free allocated memory
  //   free(mo_energy);
   //  free(one_electron_integrals);
@@ -97,7 +98,7 @@ void read_data_and_calculate(const char *filename) {
 //}
 }
 int main() {
-    const char *filename = "./data/ch4.h5";
+    const char *filename = "./data/h2o.h5";
     read_data_and_calculate(filename);
     return 0;
 }
