@@ -2,91 +2,55 @@
 #include <stdlib.h>
 #include <trexio.h>
 
-// Hartree-Fock energy calculation function declaration
-double HF(int32_t N_occ, int32_t N_mo, double E_NN, double* const one_e_int, int64_t nInts, int32_t* index, double* const two_e_int);
+
+
 
 int main() {
+    //Variable to store the return code from TREXIO functions.
     trexio_exit_code rc;
-    trexio_t* file = trexio_open("h2o.h5", 'r', TREXIO_AUTO, &rc);
 
+    //Open TREXIO file in read mode with an automatic backend detection
+    trexio_t* file = trexio_open("c2h2.h5", 'r', TREXIO_AUTO, &rc);
+    // Check if the file was opened successfully
     if (rc != TREXIO_SUCCESS) {
-        printf("Error opening TREXIO file.\n");
-        return 1;
+        printf("Error opening file.\n");
+        return 1; //Exit the program with an error code if the file cannot be opened
     }
-
-    // Declare variables
-    double energy = 0.0;              // Nuclear repulsion energy
-    int32_t n_up = 0;                 // Number of spin-up electrons
-    int32_t mo_num = 0;               // Number of molecular orbitals
-    double* mo_energy = NULL;         // Array of molecular orbital energies
-    double* core_hamiltonian = NULL;  // Core Hamiltonian matrix
-    int64_t n_integrals = 0;          // Number of two-electron integrals
-    int32_t* index = NULL;            // Array for integral indices
-    double* value = NULL;             // Array for integral values
-
-    // Read nuclear repulsion energy
-    if (trexio_exit_code trexio_read_nuclear_repulsion(file, &energy) != TREXIO_SUCCESS) {
-        printf("Error reading nuclear repulsion energy.\n");
-        trexio_close(file);
-        return 1;
-    }
-    printf("Nuclear Repulsion Energy: %lf\n", energy);
-
-    // Read the number of spin-up electrons
-    if (trexio_read_electron_up_num(file, &n_up) != TREXIO_SUCCESS) {
-        printf("Error reading number of spin-up electrons.\n");
-        trexio_close(file);
-        return 1;
-    }
-    printf("Number of spin-up electrons: %d\n", n_up);
-
-    // Read molecular orbital data
-    if (trexio_read_mo_data(file, &mo_num, &mo_energy) != TREXIO_SUCCESS) {
-        printf("Error reading molecular orbital data.\n");
-        trexio_close(file);
-        return 1;
-    }
-    printf("Number of molecular orbitals: %d\n", mo_num);
-
-    // Allocate memory for core Hamiltonian
-    core_hamiltonian = malloc(mo_num * mo_num * sizeof(double));
-    if (!core_hamiltonian) {
-        printf("Memory allocation for core Hamiltonian failed.\n");
-        trexio_close(file);
-        return 1;
-    }
-
-    // Read one-electron integrals
-    if (trexio_read_one_electron_integrals(file, mo_num, core_hamiltonian) != TREXIO_SUCCESS) {
-        printf("Error reading one-electron integrals.\n");
-        free(core_hamiltonian);
-        trexio_close(file);
-        return 1;
-    }
-
-    // Read two-electron integrals
-    if (trexio_read_two_electron_integrals(file, &n_integrals, &index, &value) != TREXIO_SUCCESS) {
-        printf("Error reading two-electron integrals.\n");
-        free(core_hamiltonian);
-        trexio_close(file);
-        return 1;
-    }
-
-    // Calculate Hartree-Fock energy
-    double E_HF = HF(n_up, mo_num, energy, core_hamiltonian, n_integrals, index, value);
-    printf("Hartree-Fock Energy: %f\n", E_HF);
-
-    // Free dynamically allocated memory
+// Read the nuclear repulsion energy from the TREXIO file
+    read_nuclear_repulsion(file);
+    read_electron_up_num(file);
+// Declare variables to store molecular orbital (MO) data
+    int32_t mo_num;   // Number of molecular orbitals
+    double* mo_energy; // Array to store MO energies
+    
+    //Read the number of MOs and their energies
+    read_mo_data(file, &mo_num, &mo_energy);
+    //saved the number of MOs in a variable
+    int32_t saved_mo = mo_num;
+    // allocate memory for core Hamiltonian matrix 
+    double* core_hamiltonian = malloc(mo_num * mo_num * sizeof(double));
+    // Read one-electron integrals (core Hamiltonian) from TREXIO
+    read_one_electron_integrals(file, mo_num, core_hamiltonian);
+    // Free the memory allocated for the core hamiltonian
     free(core_hamiltonian);
-    free(mo_energy);
+// Declaring variables to store two-electron integral data
+    int64_t n_integrals; //Number of non-zero two-electron integrals
+    int32_t* index;     // Array to store indices of the integrals
+    double* value;     // Array to store values of the integrals
+    // Read two-electron integrals from the TREXIO file
+    read_two_electron_integrals(file, &n_integrals, &index, &value);
+    // Free the memory allocated for the two-electron integrals
     free(index);
     free(value);
-
-    // Close the TREXIO file
+    // Free the memory allocated for molecular orbital energies
+    free(mo_energy);
+// Close the TREXIO file to release resources
     trexio_close(file);
 
-    // Print the saved number of molecular orbitals
-    printf("Saved number of molecular orbitals: %d\n", n_up);
+    // Optionally print the saved number of molecular orbitals for verification
+    printf("Saved number of molecular orbitals: %d\n", saved_mo_num);
+
+//exit
 
     return 0;
 }
