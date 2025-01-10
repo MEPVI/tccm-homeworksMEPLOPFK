@@ -50,31 +50,26 @@ MODULE MD_functions
     END SUBROUTINE compute_distances        
  
 
+DOUBLE PRECISION FUNCTION V(epsilon, sigma, Natoms, distance) RESULT(V_tot)
+    IMPLICIT NONE
+    DOUBLE PRECISION, INTENT(IN) :: epsilon, sigma
+    INTEGER, INTENT(IN) :: Natoms
+    DOUBLE PRECISION, INTENT(IN) :: distance(Natoms, Natoms)
+    INTEGER :: i, j
 
-      DOUBLE PRECISION FUNCTION V(epsilon, sigma, Natoms, distance) RESULT(V_tot)
-        IMPLICIT NONE
-        DOUBLE PRECISION, INTENT(IN) :: epsilon, sigma
-        INTEGER, INTENT(IN) :: Natoms
-        DOUBLE PRECISION, INTENT(IN) :: distance(Natoms, Natoms)
-        DOUBLE PRECISION, PARAMETER :: zero = 0.0
-        INTEGER :: i, j
+    ! Initialize V_tot to zero
+    V_tot = 0.0d0
 
+    ! Iterate over all pairs of atoms and calculate contributions to V_tot
+    DO i = 1, Natoms
+        DO j = i + 1, Natoms  ! Only iterate over j > i to avoid duplicates
+            IF (distance(i, j) > 0.0d0) THEN
+                V_tot = V_tot + 4 * epsilon * ((sigma / distance(i, j))**12 - (sigma / distance(i, j))**6)
+            END IF
+        END DO
+    END DO
 
-
-      !Initialize V_total to zero
-          V_tot = zero
-
-                !Iteratie over all pair of atoms and add each contribution to V_tot
-                DO i=1,Natoms
-                        DO j=1,Natoms
-                                IF (j .gt. i) THEN
-                                        V_tot = V_tot &
-                                                + 4 * epsilon * ((sigma/distance(i,j))**12-(sigma/distance(i,j))**6)
-                                END IF
-                        END DO
-                END DO
-        END FUNCTION V
-
+END FUNCTION V
 
 
     FUNCTION T(Natoms, velocity, mass) RESULT(total_kinetic_energy)

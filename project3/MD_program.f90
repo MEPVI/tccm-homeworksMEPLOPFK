@@ -11,8 +11,8 @@ program MD_program
 
     ! Initialize parameters
     input_file = "inp.txt"   ! Replace with your actual input file
-    epsilon = 0.01                 ! Example Lennard-Jones epsilon parameter
-    sigma = 3.4                    ! Example Lennard-Jones sigma parameter
+    epsilon = 0.0661                 ! Example Lennard-Jones epsilon parameter
+    sigma = 0.3345                    ! Example Lennard-Jones sigma parameter
 
     ! Read the number of atoms
     Natoms = read_Natoms(input_file)
@@ -27,14 +27,6 @@ program MD_program
     ! Compute distances
     CALL compute_distances(Natoms, coord, distance)
 
-    !Printing coords
-    write(*,*) "Printing coordinate matrix... \n"
-    do i=1,natoms
-    do j=1,natoms
-        write(*,*) distance(i, j)
-    end do
-    write(*,*) "\n"
-    end do
 
     ! Compute potential energy
     V_tot = V(epsilon, sigma, Natoms, distance)
