@@ -1,3 +1,4 @@
+
 CC = gcc
 
 CFLAGS = -Wall -Iinclude -I/opt/homebrew/opt/openblas/include
@@ -5,6 +6,7 @@ LDFLAGS = -L/opt/homebrew/lib -ltrexio
 
 SRC = main.c data-reader.c
 OBJ = main.o data-reader.o
+
 
 EXEC = main
 

@@ -7,14 +7,14 @@
 
 void read_nuclear_repulsion(trexio_t* file) {
     double energy;
-    if (trexio_read_nucleus_repulsion(file, &energy) != TREXIO_SUCCESS) {
+    if (trexio_read_nucleus_repulsion(file, nuc_energy) != TREXIO_SUCCESS) {
         printf("Error reading nuclear repulsion energy.\n");
         exit(1);
     }
     printf("Nuclear Repulsion Energy: %f\n", energy);
 }
 
-void read_electron_up_num(trexio_t* file) {
+void read_electron_up_num(trexio_t* file, int32_t* n_up) {
     int32_t n_up;
     if (trexio_read_electron_up_num(file, &n_up) != TREXIO_SUCCESS) {
         printf("Error reading number of occupied orbitals.\n");

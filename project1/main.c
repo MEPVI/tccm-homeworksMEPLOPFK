@@ -2,17 +2,13 @@
 #include <stdlib.h>
 #include <trexio.h>
 
-//declaration of functions to read specific data from TREXIO Library 
-void read_nuclear_repulsion(trexio_t* file);
-void read_electron_up_num(trexio_t* file);
-void read_mo_data(trexio_t* file, int32_t* mo_num, double** mo_energy);
-void read_one_electron_integrals(trexio_t* file, int32_t mo_num, double* core_hamiltonian);
-void read_two_electron_integrals(trexio_t* file, int64_t* n_integrals, int32_t** index, double** value);
+
 
 
 int main() {
     //Variable to store the return code from TREXIO functions.
     trexio_exit_code rc;
+
     //Open TREXIO file in read mode with an automatic backend detection
     trexio_t* file = trexio_open("c2h2.h5", 'r', TREXIO_AUTO, &rc);
     // Check if the file was opened successfully
@@ -55,5 +51,6 @@ int main() {
     printf("Saved number of molecular orbitals: %d\n", saved_mo_num);
 
 //exit
+
     return 0;
 }

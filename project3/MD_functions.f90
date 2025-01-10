@@ -1,5 +1,6 @@
 MODULE MD_functions
-<<<<<<< HEAD
+
+
     IMPLICIT NONE
 
     CONTAINS
@@ -58,6 +59,7 @@ MODULE MD_functions
         DOUBLE PRECISION, INTENT(IN) :: distance(Natoms, Natoms)
         DOUBLE PRECISION, PARAMETER :: zero = 0.0
         INTEGER :: i, j
+
 
 
       !Initialize V_total to zero
@@ -133,6 +135,7 @@ SUBROUTINE compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsil
 	END DO 
 END DO
 END SUBROUTINE compute_acc
+
         ! Initialize V_total to zero
         V_tot = zero
 
