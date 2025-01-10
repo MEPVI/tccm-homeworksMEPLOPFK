@@ -108,7 +108,7 @@ END FUNCTION V
          DO i = 1, Natoms
          inverse_m = 1.0 / mass(i)
          DO j = 1, Natoms
-                 IF (j .gt. i) THEN
+                 IF (j .ne. i) THEN
                          rij = distance(i,j)
  
                          ! Force from Lennard jones potential
