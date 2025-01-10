@@ -1,0 +1,25 @@
+# TCCM Homework: HF and MP2 Energy Calculations
+
+## Overview
+This project implements Hartree-Fock (HF) and MP2 energy calculations using the TREXIO library.
+
+## Directory Structure
+- `src`: Contains source files for the program (e.g., `main.c`, `HF.c`, `MP2.c`).
+- `tests`: Contains test files to ensure the program behaves as expected.
+- `data`: Example input data for testing the program.
+- `LICENSE`: License for the project.
+- `AUTHORS`: List of contributors.
+- `README.md`: Project description.
+- `INSTALL.md`: Instructions to install and run the program.
+
+## Features
+- Hartree-Fock (HF) energy computation in C
+- MP2 correlation energy computation in C
+
+## Requirements
+- C compiler (e.g., GCC)
+- TREXIO library
+- Operating system: macOS/Linux
+
+## How to Run
+See `INSTALL.md` for installation and running instructions.
