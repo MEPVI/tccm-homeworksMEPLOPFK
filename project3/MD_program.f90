@@ -2,20 +2,24 @@ program MD_program
     USE MD_functions
     IMPLICIT NONE
 
-    INTEGER :: Natoms, i, j, n_step
+    INTEGER :: Natoms, i, j, n_step, Msteps
     DOUBLE PRECISION, ALLOCATABLE :: coord(:, :), mass(:), distance(:, :)
-    CHARACTER(len=100) :: input_file
-    DOUBLE PRECISION :: epsilon, sigma, V_tot
+    CHARACTER(len=100) :: input_file, output_file
+    DOUBLE PRECISION :: epsilon, sigma, V_tot, E_tot
     DOUBLE PRECISION, ALLOCATABLE :: velocity(:, :), acceleration(:,:)
     DOUBLE PRECISION :: total_kinetic_energy
     REAL :: timestep
+    
 
+     
     ! Initialize parameters
     input_file = "inp.txt"   ! Replace with your actual input file
+    output_file= "output.out"  ! output file
     epsilon = 0.0661                 ! Example Lennard-Jones epsilon parameter
     sigma = 0.3345                    ! Example Lennard-Jones sigma parameter
     n_step= 1000   !integers 
     timestep= 0.2  ! real
+    Msteps= 200 !Print every Msteps
    
  
     ! Read the number of atoms
@@ -43,8 +47,18 @@ program MD_program
     PRINT *, "Total kinetic energy:", total_kinetic_energy
     !PRINT *, "vel", velocity(3,2)    
      
+    E_tot = total_kinetic_energy + V_tot  
 ! call acce
     CALL compute_acc(Natoms, coord, mass, distance, acceleration, sigma, epsilon)
+
+    !Printing in output file the initial steps
+    OPEN(unit=10, file=output_file, status='replace', action='write')
+    WRITE(10,*) Natoms
+    WRITE(10,*) "# E_K:", total_kinetic_energy, "E_V:", V_tot, "E_tot:", E_tot   
+    DO i=1,Natoms
+    WRITE(10,*) coord(i,:)
+ END DO
+
 
      !start MD
      do i = 1, n_step
@@ -59,10 +73,26 @@ program MD_program
 
           !update v with updated a
           CALL update_v(Natoms, coord, velocity, acceleration, timestep)
-     PRINT *, "position:", coord(1,:)
-end do   
+            !printing output
+            if(mod(i,Msteps)== 0) then 
+             total_kinetic_energy = T(Natoms, velocity, mass)
+               CALL compute_distances(Natoms, coord, distance)
+              V_tot = V(epsilon, sigma, Natoms, distance)
+              E_tot = total_kinetic_energy + V_tot 
+              !Printing in output file the initial steps
+    WRITE(10,*) Natoms
+    WRITE(10,*) "# E_K:", total_kinetic_energy, "E_V:", V_tot, "E_tot:", E_tot
+    DO j=1,Natoms
+    WRITE(10,*) coord(j,:)
+ END DO
 
+             endif
+end do   
+ CLOSE(10)
 
     ! Deallocate arrays
     DEALLOCATE(coord, mass, distance, velocity)
+
+
+
 END PROGRAM MD_program
