@@ -89,8 +89,13 @@ END FUNCTION V
             total_kinetic_energy = total_kinetic_energy + 0.5d0 * mass(i) * velocity_squared
         END DO
     END FUNCTION T
-   
 
+SUBROUTINE update_r(r, r_0, v, ts, a)
+    IMPLICIT NONE
+    
+    DOUBLE PRECISION  
+    
+END SUBROUTINE
 
 
 
