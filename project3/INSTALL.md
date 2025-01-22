@@ -16,13 +16,15 @@ Clone the project repository to your local system:
 For MD Project (Fortran)
 1. Navigate to the MD project directory:
 // cd project3
+// cd src
 ### 3. Compile the Fortran files:
-// gfortran -o md_simulation MD_functions.f90
+// run make
    
 ### 4. Running the Programs
 MD Simulation
 To run the MD simulation:
-// ./md_simulation <input_file>
+// from directory project3
+// ./bin/.MD_program <input_file>
 Replace <input_file> with the path to your molecular dynamics input file.
 
 ### 5. Testing the Programs
